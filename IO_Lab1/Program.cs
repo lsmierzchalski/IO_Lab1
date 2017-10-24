@@ -10,34 +10,86 @@ using System.Threading.Tasks;
 
 namespace Program
 {
+    public class SumTab
+    {
+        public int numberThread;
+        public int[] tab;
+        public int size;
+
+        public SumTab(int nr, int[] ltab, int lsize)
+        {
+            numberThread = nr;
+            tab = ltab;
+            size = lsize;
+        }
+    }
+
     class Program
     {
 
         private static Object thisLock = new Object();
 
+        public static int sum;
+
         static void Main(string[] args)
         {
-
-
+            /*Zad4
             ThreadPool.QueueUserWorkItem(ThreadProcServer);
             ThreadPool.QueueUserWorkItem(ThreadProcClient);
             ThreadPool.QueueUserWorkItem(ThreadProcClient);
             ThreadPool.QueueUserWorkItem(ThreadProcClient);
 
             Console.WriteLine("ThreadMain");
-            Thread.Sleep(5000);
+            Thread.Sleep(5000);*/
+
+            Zad5(12, 3);
+            Console.ReadKey();
         }
 
-        static void ThreadProcServer(Object stateInfo)
+        static void Zad5(int table_size, int size_thread)
         {
-            TcpListener server = new TcpListener(IPAddress.Any, 2048);
-            server.Start();
-            while (true)
-            {
-                TcpClient client = server.AcceptTcpClient();
+            sum = 0;
 
-                ThreadPool.QueueUserWorkItem(ThreadProcNewClient, client);
+            int[] tab = new int[table_size];
+            Random rnd = new Random();
+            Console.Write("Tablica: ");
+            int tmp = 0;
+            for (int i=0; i<table_size; i++)
+            {
+                tab[i] = rnd.Next(1, 100);
+                Console.Write(tab[i] + ", ");
+                tmp += tab[i];
             }
+            Console.Write("\nSuma = "+tmp);
+
+            for (int i=0; i<table_size/size_thread; i++)
+            {
+                int[] tab_thread = new int[size_thread];
+                int k = 0;
+                Console.Write("\nTablica Watku "+i+": ");
+                for (int j=(i*size_thread); j< (i * size_thread+size_thread); j++)
+                {
+                    tab_thread[k] = tab[j];
+                    Console.Write(tab_thread[k] + ", ");
+                    k++;
+                }
+                SumTab sb = new SumTab(i,tab_thread, size_thread);
+                ThreadPool.QueueUserWorkItem(new WaitCallback(ThreadSum),  sb );
+            }
+            
+            Console.Write("\nSum = " + sum);
+        }
+
+        static void ThreadSum(Object stateInfo)
+        {
+            int tmp = 0;
+            SumTab sb = (SumTab)stateInfo;
+            for (int i = 0; i < sb.size; i++)
+            {
+                tmp += sb.tab[i];
+            }
+            sum += tmp;
+            Console.Write("\nWątek " + sb.numberThread +" sum = " + sum);
         }
 
         static void ThreadProcClient(Object stateInfo)
@@ -74,9 +126,10 @@ namespace Program
             string newmessage = "";
             for (int i = 0; i < message.Length; i++)
             {
-                if (message[i] != ' ') newmessage += message[i];
+                //Console.Write("["+message[i]+"]="+(int)message[i]+", ");
+                if ((int)message[i] != 0) newmessage += message[i];
             }
-            Console.WriteLine(message);
+            Console.WriteLine(newmessage);
             Console.ResetColor();
         }
     }

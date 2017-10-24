@@ -1,0 +1,6 @@
+C:\PROJEKTY\IO\IO_Lab1\IO_Lab1\bin\Debug\IO_Lab1.exe.config
+C:\PROJEKTY\IO\IO_Lab1\IO_Lab1\bin\Debug\IO_Lab1.exe
+C:\PROJEKTY\IO\IO_Lab1\IO_Lab1\bin\Debug\IO_Lab1.pdb
+C:\PROJEKTY\IO\IO_Lab1\IO_Lab1\obj\Debug\IO_Lab1.csprojResolveAssemblyReference.cache
+C:\PROJEKTY\IO\IO_Lab1\IO_Lab1\obj\Debug\IO_Lab1.exe
+C:\PROJEKTY\IO\IO_Lab1\IO_Lab1\obj\Debug\IO_Lab1.pdb
